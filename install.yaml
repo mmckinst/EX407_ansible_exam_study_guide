@@ -1,0 +1,41 @@
+---
+- hosts: web01
+  become: true
+  tasks:
+  - copy:
+      dest: /etc/specialness
+      owner: root
+      group: root
+      mode: 0644
+      content: "{{ 10 | random}}"
+
+- hosts: db01
+  become: true
+  tasks:
+  - copy:
+      dest: /etc/specialness
+      owner: root
+      group: root
+      mode: 0644
+      content: "{{ 10 | random}}"
+
+- hosts: all
+  become: true
+  tasks:
+  - copy:
+      dest: /usr/bin/always_exit_zero
+      owner: root
+      group: root
+      mode: 755
+      content: | #!/bin/bash
+        echo 'ERROR: everything is broken'
+        exit 0
+
+  - copy:
+      dest: /usr/bin/always_exit_one
+      owner: root
+      group: root
+      mode: 755
+      content: | #!/bin/bash
+        echo 'INFO: everything is fine'
+        exit 1
